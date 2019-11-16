@@ -3,42 +3,6 @@ import random
 import timeit
 
 
-def bubble_sort(nums):
-    """
-
-    :param nums: list of numbers to be sorted
-    :return: sorted list of numbers
-    """
-    n = len(nums)
-    while n > 1:
-        for i in range(1, n):
-            if nums[i] > nums[i - 1]:
-                temp = nums[i]
-                nums[i] = nums[i - 1]
-                nums[i - 1] = temp
-        n -= 1
-    return nums
-
-
-def insertion_sort(ls):
-    """
-
-    :param ls: list to be sorted
-    :return: sorted list
-    """
-    for i in range(len(ls)):
-        cursor = ls[i]
-        pos = i
-
-        while pos > 0 and ls[pos - 1] > cursor:
-            # Swap the number down the list
-            ls[pos] = ls[pos - 1]
-            pos = pos - 1
-        # Break and do the final swap
-        ls[pos] = cursor
-    return ls
-
-
 def binary_search(val, ls):
     """
 
@@ -55,6 +19,37 @@ def binary_search(val, ls):
         return half + binary_search(ls[cur:], val)
     elif val > cur:
         return binary_search(ls[:cur], val)
+
+
+def bubble_sort(r_nums):
+    not_sorted = False
+    nums = r_nums[:]
+    n = len(nums)
+    while n > 1:
+        for i in range(1, n):
+            if nums[i] < nums[i - 1]:
+                nums[i], nums[i - 1] = nums[i - 1], nums[i]
+                not_sorted = True
+        if not not_sorted:
+            # if the list is already sorted
+            break
+        not_sorted = False
+        n -= 1
+    return nums
+
+
+def insertion_sort(r_ls):
+    ls = r_ls[:]
+    for i in range(len(ls)):
+        cursor = ls[i]
+        pos = i
+        while pos > 0 and ls[pos - 1] > cursor:
+            # Swap the number down the list
+            ls[pos] = ls[pos - 1]
+            pos -= 1
+        # Break and do the final swap
+        ls[pos] = cursor
+    return ls
 
 
 def time_bubble_sort(rep):
@@ -83,9 +78,12 @@ def time_tim_sort(rep):
     return tim_time * 1000
 
 
-low = 10; high = 100; step = 10  # not very pythonic eh
+low = 10
+high = 200
+step = 5
+
 number_of_elements = list(range(low, high, step))
-reps = 10000  # number of repetitions for timeit
+reps = 100  # number of repetitions for timeit
 bubble_times = []
 tim_times = []
 ins_times = []
