@@ -20,21 +20,32 @@ def bubble_sort(nums):
     return nums
 
 
-def insertion_sort(arr):
-    for i in range(len(arr)):
-        cursor = arr[i]
+def insertion_sort(ls):
+    """
+
+    :param ls: list to be sorted
+    :return: sorted list
+    """
+    for i in range(len(ls)):
+        cursor = ls[i]
         pos = i
 
-        while pos > 0 and arr[pos - 1] > cursor:
+        while pos > 0 and ls[pos - 1] > cursor:
             # Swap the number down the list
-            arr[pos] = arr[pos - 1]
+            ls[pos] = ls[pos - 1]
             pos = pos - 1
         # Break and do the final swap
-        arr[pos] = cursor
-    return arr
+        ls[pos] = cursor
+    return ls
 
 
-def binary_search(ls, val):
+def binary_search(val, ls):
+    """
+
+    :param val: value to find in list ls
+    :param ls: list of numbers to search through
+    :return: indec of first instance of val found in ls
+    """
     num = len(ls)
     half = num // 2
     cur = ls[half]
@@ -46,43 +57,56 @@ def binary_search(ls, val):
         return binary_search(ls[:cur], val)
 
 
-def time_bubble_sort(num):
+def time_bubble_sort(rep):
+    """
+
+    :param rep: number of repetitions to be made
+    :return: average time for executing bubble sort in milliseconds
+    """
     bubble_time = timeit.timeit('bubble_sort(numbers)',
                                 'from __main__ import bubble_sort, numbers',
-                                number=num) / num
-    return bubble_time
+                                number=rep) / rep
+    return bubble_time * 1000  # milliseconds
 
 
-def time_tim_sort(num):
+def time_insertion_sort(rep):
+    ins_time = timeit.timeit('insertion_sort(numbers)',
+                             'from __main__ import insertion_sort, numbers',
+                             number=rep) / rep
+    return ins_time * 1000
+
+
+def time_tim_sort(rep):
     tim_time = timeit.timeit('sorted(numbers)',
                              'from __main__ import numbers',
-                             number=num) / num
-    return tim_time
+                             number=rep) / rep
+    return tim_time * 1000
 
 
-number_of_elements = list(range(10, 100, 10))
-reps = 1000  # number of repetitions for timeit
+low = 10; high = 100; step = 10  # not very pythonic eh
+number_of_elements = list(range(low, high, step))
+reps = 10000  # number of repetitions for timeit
 bubble_times = []
 tim_times = []
+ins_times = []
+
 for n in number_of_elements:
     numbers = list(range(n))
     random.shuffle(numbers)
     bubble_times.append(time_bubble_sort(reps))
     tim_times.append(time_tim_sort(reps))
+    ins_times.append(time_insertion_sort(reps))
+    print(f'Progress ({low} to {high}): {n}')
+print('done\n')
 
-plt.plot(number_of_elements, bubble_times, label='Bubble sort times')
-plt.plot(number_of_elements, tim_times, label='Tim sort times')
+plt.plot(number_of_elements, bubble_times, color='#444444', label='Bubble sort')
+plt.plot(number_of_elements, tim_times, color='#5a7d9a', label='Tim sort')
+plt.plot(number_of_elements, ins_times, color='#adad3b', label='Insertion sort')
+
+# use plt.style.use('style name') for custom built in plot styles e.g 'fivethirtyeight'
+# use plt.savefig('C:\path\filename') to save plot as filename.png at 'C:\path\'
+
 plt.xlabel('Number of elements')
-plt.ylabel('Time taken')
+plt.ylabel('Time taken (ms)')
 plt.legend()
 plt.show()
-
-# numb = 7
-# index = binary_search(numbers, numb)
-# print(f"binary search for {num} is at index {index}")
-# numbers.sort()
-# print(numbers)
-# print(f"insertion sort time: {timeit.timeit('insertion_sort(numbers)',
-# 'from __main__ import insertion_sort, numbers', number=num_times)/num_times}")
-
-
