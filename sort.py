@@ -8,16 +8,16 @@ def binary_search(val, ls):
 
     :param val: value to find in list ls
     :param ls: list of numbers to search through
-    :return: indec of first instance of val found in ls
+    :return: index of first instance of val found in ls
     """
     num = len(ls)
     half = num // 2
     cur = ls[half]
     if cur == val:
         return half
-    elif val < cur:
-        return half + binary_search(ls[cur:], val)
     elif val > cur:
+        return half + binary_search(ls[cur:], val)
+    elif val < cur:
         return binary_search(ls[:cur], val)
 
 
@@ -40,7 +40,7 @@ def bubble_sort(r_nums):
 
 def insertion_sort(r_ls):
     ls = r_ls[:]
-    for i in range(len(ls)):
+    for i in range(1, len(ls)):
         cursor = ls[i]
         pos = i
         while pos > 0 and ls[pos - 1] > cursor:
@@ -50,6 +50,19 @@ def insertion_sort(r_ls):
         # Break and do the final swap
         ls[pos] = cursor
     return ls
+
+
+def selection_sort(ls):
+    nums = ls[:]
+    n = 0
+    while n < len(nums):
+        min_index = n
+        for i in range(n, len(nums)):
+            if nums[i] < nums[min_index]:
+                min_index = i
+        nums[n], nums[min_index] = nums[min_index], nums[n]
+        n += 1
+    return nums
 
 
 def time_bubble_sort(rep):
@@ -71,6 +84,18 @@ def time_insertion_sort(rep):
     return ins_time * 1000
 
 
+def time_selection_sort(rep):
+    """
+
+    :param rep: number of repetitions to be made
+    :return: average time for executing bubble sort in milliseconds
+    """
+    selection_time = timeit.timeit('selection_sort(numbers)',
+                                'from __main__ import selection_sort, numbers',
+                                number=rep) / rep
+    return selection_time * 1000  # milliseconds
+
+
 def time_tim_sort(rep):
     tim_time = timeit.timeit('sorted(numbers)',
                              'from __main__ import numbers',
@@ -78,15 +103,16 @@ def time_tim_sort(rep):
     return tim_time * 1000
 
 
-low = 10
-high = 200
-step = 5
+low = 10  # smallest number of elements
+high = 350  # highest number of elements
+step = 10  # size difference
 
 number_of_elements = list(range(low, high, step))
 reps = 100  # number of repetitions for timeit
 bubble_times = []
 tim_times = []
 ins_times = []
+sel_times = []
 
 for n in number_of_elements:
     numbers = list(range(n))
@@ -94,12 +120,14 @@ for n in number_of_elements:
     bubble_times.append(time_bubble_sort(reps))
     tim_times.append(time_tim_sort(reps))
     ins_times.append(time_insertion_sort(reps))
+    sel_times.append(time_selection_sort(reps))
     print(f'Progress ({low} to {high}): {n}')
 print('done\n')
 
 plt.plot(number_of_elements, bubble_times, color='#444444', label='Bubble sort')
 plt.plot(number_of_elements, tim_times, color='#5a7d9a', label='Tim sort')
 plt.plot(number_of_elements, ins_times, color='#adad3b', label='Insertion sort')
+plt.plot(number_of_elements, sel_times, color='#76FA12', label='Selection sort')
 
 # use plt.style.use('style name') for custom built in plot styles e.g 'fivethirtyeight'
 # use plt.savefig('C:\path\filename') to save plot as filename.png at 'C:\path\'
