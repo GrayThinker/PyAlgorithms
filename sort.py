@@ -2,6 +2,8 @@ from matplotlib import pyplot as plt
 import random
 import timeit
 
+# TODO: Radix sort, gravity sort, merge sort, cocktail sort
+
 
 def binary_search(val, ls):
     """
@@ -135,8 +137,8 @@ def time_selection_sort(rep):
     :return: average time for executing bubble sort in milliseconds
     """
     selection_time = timeit.timeit('selection_sort(numbers)',
-                                'from __main__ import selection_sort, numbers',
-                                number=rep) / rep
+                                   'from __main__ import selection_sort, numbers',
+                                   number=rep) / rep
     return selection_time * 1000  # milliseconds
 
 
@@ -172,15 +174,15 @@ sel_times = []
 pigeon_times = []
 
 
-for n in number_of_elements:
-    numbers = list(range(n))
+for no in number_of_elements:
+    numbers = list(range(no))
     random.shuffle(numbers)
     # bubble_times.append(time_bubble_sort(reps))
     tim_times.append(time_tim_sort(reps))
     # ins_times.append(time_insertion_sort(reps))
     # sel_times.append(time_selection_sort(reps))
     pigeon_times.append(time_pigeon_sort(reps))
-    print(f'Progress ({low} to {high}): {n}')
+    print(f'Progress ({low} to {high}): {no}')
 print('done\n')
 
 # plt.plot(number_of_elements, bubble_times, color='#444444', label='Bubble sort')
