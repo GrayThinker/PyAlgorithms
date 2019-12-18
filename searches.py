@@ -1,4 +1,6 @@
-
+# TODO: Jump search, interpolation search, exponential search, sublist search
+# TODO: Fiboonaci search, the ubiquitous binary search, unbound binary search
+# TODO: binary search withouth recursion
 
 def binary_search(val, ls):
     """
