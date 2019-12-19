@@ -1,4 +1,12 @@
-# TODO: Radix sort, gravity sort, merge sort, cocktail sort sedge sort
+"""
+TODO: Radix sort, gravity sort, cocktail sort sedge sort,
+double selection sort, quick sort, shell sort, comb sort,
+odd even sort, smooth sort, gnome sort, weak-heap sort
+funnel sort, cube sort, cache-oblivious distribution sort, 
+multi-key quick sort, tournament sort, splay sort.
+
+"""
+import math
 import random
 from timeit import timeit
 from matplotlib import pyplot as plt
@@ -88,7 +96,52 @@ def pigeon_hole_sort(nums):
     return sorted_ls
 
 
+def merge(list_a, list_b):
+    # lists must already be sorted.
+    new_list = []
+    i = 0
+    j = 0
+    while (i < len(list_a) and j < len(list_b)):
+        if(list_a[i] < list_b[j]):
+            new_list.append(list_a[i])
+            i += 1
+            # what if both values are the same
+        else:
+            new_list.append(list_b[j])
+            j += 1
+    while (i < len(list_a)): 
+        new_list.append(list_a[i])
+        i += 1
+    while (j < len(list_b)):
+        new_list.append(list_b[j])
+        j += 1
+
+    return new_list
+
+
+def merge_sort(original_list):
+    sorted_list = original_list[:]
+    broken_list = [sorted_list[i:i + 2] for i in range(0, len(sorted_list), 2)]
+    for n in broken_list:
+        if (len(n) == 2 and n[0] > n[1]):
+            n[0], n[1] = n[1], n[0]  # could be added to broken_list list comprehension
+
+    depth = int(math.log(len(sorted_list), 2)) + 1
+    while(depth): # condition yet to be set
+            temp_list = []
+            for i in range(0, len(broken_list), 2):
+                if (i != len(broken_list) - 1):
+                    temp_list.append(merge(broken_list[i], broken_list[i+1]))
+                else: broken_list = temp_list.append(broken_list[i])
+            broken_list = temp_list
+            depth -= 1
+    return broken_list[0]
+
+
 def time_sort(sort, numbers, reps=10):
+    # FIXME: What if numbers was *number i.e. *args so this works
+    # on any function, not just sorts. Then main_code would be
+    # main_code = f"{sort}({[n for n in numbers[0]]})"
     main_code = f"{sort}({numbers})"
     # TODO: adding setup_code="" parameter. 
     # setup_code = f"from __main__ import {sort}, {numbers}"
@@ -105,30 +158,32 @@ def test_sort(sort, numbers, show=False):
     test_numbers = sort(numbers)
     if(show): print(f'result: {test_numbers}')
 
-    if (sorted_numbers == test_numbers):
-        return True
-    else: return False
+    if (sorted_numbers == test_numbers): return True
+    
+    return False
 
 
 if __name__ == "__main__":
     low = 10  # smallest number of elements
-    high = 1000  # highest number of elements
+    high = 200  # highest number of elements
     step = 5  # size difference
-    reps = 10  # number of repetitions for timeit (must > 0)
-
+    reps = 20  # number of repetitions for timeit (must > 0)
+    
     number_of_elements = list(range(low, high, step))
     bubble_times = []
     selection_times = []
     insertion_times = []
     pigeon_times = []
+    merge_times = []
 
     for num in number_of_elements:
         numbers = list(range(num))
         random.shuffle(numbers)
-        bubble_times.append(time_sort('bubble_sort', 'numbers', reps))
+        bubble_times.append(time_sort('bubble_sort', numbers, reps))
         selection_times.append(time_sort('selection_sort', 'numbers', reps))
         insertion_times.append(time_sort('insertion_sort', 'numbers', reps))
         pigeon_times.append(time_sort('pigeon_hole_sort', 'numbers', reps))
+        merge_times.append(time_sort('merge_sort', 'numbers', reps))
         print(f'Progress ({low} to {high}): {num}')
     print('done\n')
     
@@ -136,6 +191,7 @@ if __name__ == "__main__":
     plt.plot(number_of_elements, selection_times, color='#adad3b', label='Selection sort')
     plt.plot(number_of_elements, insertion_times, color='#76FA12', label='Insertion sort')
     plt.plot(number_of_elements, pigeon_times, color='#b237a9', label='Pigeon hole sort')
+    plt.plot(number_of_elements, merge_times, color='#c1c2c4', label='Merge sort')
     plt.xlabel('Number of elements')
     plt.ylabel('Time taken (ms)')
     plt.legend()
