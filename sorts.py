@@ -109,33 +109,38 @@ def merge(list_a, list_b):
         else:
             new_list.append(list_b[j])
             j += 1
-    while (i < len(list_a)): 
-        new_list.append(list_a[i])
-        i += 1
-    while (j < len(list_b)):
-        new_list.append(list_b[j])
-        j += 1
+    new_list += (list_a[i:])
+    new_list += (list_b[j:])
 
     return new_list
-
-
-def merge_sort(original_list):
-    sorted_list = original_list[:]
-    broken_list = [sorted_list[i:i + 2] for i in range(0, len(sorted_list), 2)]
+def merge_sort(arr):
+    broken_list = [arr[i:i + 2] for i in range(0, len(arr), 2)]
     for n in broken_list:
         if (len(n) == 2 and n[0] > n[1]):
-            n[0], n[1] = n[1], n[0]  # could be added to broken_list list comprehension
+            n[0], n[1] = n[1], n[0]  # FIXME: could be added to broken_list list comprehension
 
-    depth = int(math.log(len(sorted_list), 2)) + 1
-    while(depth): # condition yet to be set
-            temp_list = []
-            for i in range(0, len(broken_list), 2):
-                if (i != len(broken_list) - 1):
-                    temp_list.append(merge(broken_list[i], broken_list[i+1]))
-                else: broken_list = temp_list.append(broken_list[i])
-            broken_list = temp_list
-            depth -= 1
+    depth = int(math.log(len(arr), 2)) + 1
+    while(depth):
+        temp_list = []
+        for i in range(0, len(broken_list), 2):
+            if (i != len(broken_list) - 1):
+                temp_list.append(merge(broken_list[i], broken_list[i+1]))
+            else: broken_list = temp_list.append(broken_list[i])
+        broken_list = temp_list
+        depth -= 1
     return broken_list[0]
+
+
+def quick_sort(l_arr):
+    arr = l_arr[:]
+    if len(arr) <= 1: return arr
+    less_ls, equal_ls, greater_ls = [], [], []
+    pivot = arr[-1]
+    for val in arr:
+        if val < pivot: less_ls.append(val)
+        elif val == pivot: equal_ls.append(val)
+        else: greater_ls.append(val)
+    return quick_sort(less_ls) + equal_ls + quick_sort(greater_ls)
 
 
 def time_sort(sort, numbers, reps=10):
@@ -164,10 +169,10 @@ def test_sort(sort, numbers, show=False):
 
 
 if __name__ == "__main__":
-    low = 10  # smallest number of elements
+    low = 2  # smallest number of elements
     high = 200  # highest number of elements
-    step = 5  # size difference
-    reps = 20  # number of repetitions for timeit (must > 0)
+    step = 1  # size difference
+    reps = 10  # number of repetitions for timeit (must > 0)
     
     number_of_elements = list(range(low, high, step))
     bubble_times = []
@@ -175,15 +180,24 @@ if __name__ == "__main__":
     insertion_times = []
     pigeon_times = []
     merge_times = []
+    quick_times = []
 
     for num in number_of_elements:
         numbers = list(range(num))
+        # numbers += list(range(num//5))
+        # numbers += list(range(num//3, num))
+        # numbers += list(range(num//2))
         random.shuffle(numbers)
+        # print(f'numbers: {numbers}')
+        if(not test_sort(quick_sort, numbers)):  # for testing current sort
+            print("ERROR")
+            break
         bubble_times.append(time_sort('bubble_sort', numbers, reps))
         selection_times.append(time_sort('selection_sort', 'numbers', reps))
         insertion_times.append(time_sort('insertion_sort', 'numbers', reps))
         pigeon_times.append(time_sort('pigeon_hole_sort', 'numbers', reps))
         merge_times.append(time_sort('merge_sort', 'numbers', reps))
+        quick_times.append(time_sort('quick_sort', 'numbers', reps))
         print(f'Progress ({low} to {high}): {num}')
     print('done\n')
     
@@ -191,7 +205,8 @@ if __name__ == "__main__":
     plt.plot(number_of_elements, selection_times, color='#adad3b', label='Selection sort')
     plt.plot(number_of_elements, insertion_times, color='#76FA12', label='Insertion sort')
     plt.plot(number_of_elements, pigeon_times, color='#b237a9', label='Pigeon hole sort')
-    plt.plot(number_of_elements, merge_times, color='#c1c2c4', label='Merge sort')
+    plt.plot(number_of_elements, merge_times, color='#41F2c4', label='Merge sort')
+    plt.plot(number_of_elements, quick_times, color='#4444F2', label='Quick sort')
     plt.xlabel('Number of elements')
     plt.ylabel('Time taken (ms)')
     plt.legend()
