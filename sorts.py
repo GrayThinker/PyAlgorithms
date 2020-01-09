@@ -1,6 +1,6 @@
 """
 TODO: Radix sort, gravity sort, cocktail sort sedge sort,
-double selection sort, quick sort, shell sort, comb sort,
+double selection sort, shell sort, comb sort,
 odd even sort, smooth sort, gnome sort, weak-heap sort
 funnel sort, cube sort, cache-oblivious distribution sort, 
 multi-key quick sort, tournament sort, splay sort.
@@ -113,11 +113,13 @@ def merge(list_a, list_b):
     new_list += (list_b[j:])
 
     return new_list
+
+
 def merge_sort(arr):
     broken_list = [arr[i:i + 2] for i in range(0, len(arr), 2)]
     for n in broken_list:
         if (len(n) == 2 and n[0] > n[1]):
-            n[0], n[1] = n[1], n[0]  # FIXME: could be added to broken_list list comprehension
+            n[0], n[1] = n[1], n[0]
 
     depth = int(math.log(len(arr), 2)) + 1
     while(depth):
@@ -141,6 +143,40 @@ def quick_sort(l_arr):
         elif val == pivot: equal_ls.append(val)
         else: greater_ls.append(val)
     return quick_sort(less_ls) + equal_ls + quick_sort(greater_ls)
+
+
+def bogo_sort(l_arr):
+    arr = l_arr[:]
+    while(arr != sorted(l_arr)):
+        random.shuffle(arr)
+
+    return arr
+
+
+def opt_bogo_sort(l_arr):
+    arr = l_arr[:]
+    n = 0
+    s_arr = sorted(arr)
+    while(n < len(arr)):
+        copy = arr[n:]
+        random.shuffle(copy)
+        arr[n:] = copy
+        if arr[n] == s_arr[n]:
+            n += 1
+    return arr
+
+
+def shell_sort(l_arr):
+    """
+    Based on insertion sort. Has a worst time compexity of polynomial
+    time. 
+    """
+    pass
+
+
+def gravity_sort(l_arr):
+    pass
+
 
 
 def time_sort(sort, numbers, reps=10):
@@ -169,10 +205,10 @@ def test_sort(sort, numbers, show=False):
 
 
 if __name__ == "__main__":
-    low = 2  # smallest number of elements
-    high = 200  # highest number of elements
+    low = 1  # smallest number of elements
+    high = 50  # highest number of elements
     step = 1  # size difference
-    reps = 10  # number of repetitions for timeit (must > 0)
+    reps = 1  # number of repetitions for timeit (must > 0)
     
     number_of_elements = list(range(low, high, step))
     bubble_times = []
@@ -181,33 +217,39 @@ if __name__ == "__main__":
     pigeon_times = []
     merge_times = []
     quick_times = []
+    bogo_times = []
+    opt_bogo_times = []
 
     for num in number_of_elements:
         numbers = list(range(num))
-        # numbers += list(range(num//5))
-        # numbers += list(range(num//3, num))
-        # numbers += list(range(num//2))
+        numbers += list(range(num//5))
+        numbers += list(range(num//3, num))
+        numbers += list(range(num//2))
         random.shuffle(numbers)
         # print(f'numbers: {numbers}')
-        if(not test_sort(quick_sort, numbers)):  # for testing current sort
+        if(not test_sort(opt_bogo_sort, numbers)):  # for testing current sort
             print("ERROR")
             break
-        bubble_times.append(time_sort('bubble_sort', numbers, reps))
-        selection_times.append(time_sort('selection_sort', 'numbers', reps))
-        insertion_times.append(time_sort('insertion_sort', 'numbers', reps))
-        pigeon_times.append(time_sort('pigeon_hole_sort', 'numbers', reps))
-        merge_times.append(time_sort('merge_sort', 'numbers', reps))
-        quick_times.append(time_sort('quick_sort', 'numbers', reps))
+        # bogo_times.append(time_sort('bogo_sort', numbers, reps))
+        # opt_bogo_times.append(time_sort('opt_bogo_sort', numbers, reps))
+        # bubble_times.append(time_sort('bubble_sort', numbers, reps))
+        # selection_times.append(time_sort('selection_sort', 'numbers', reps))
+        # insertion_times.append(time_sort('insertion_sort', 'numbers', reps))
+        # pigeon_times.append(time_sort('pigeon_hole_sort', 'numbers', reps))
+        # merge_times.append(time_sort('merge_sort', 'numbers', reps))
+        # quick_times.append(time_sort('quick_sort', 'numbers', reps))
         print(f'Progress ({low} to {high}): {num}')
     print('done\n')
     
-    plt.plot(number_of_elements, bubble_times, color='#444444', label='Bubble sort')
-    plt.plot(number_of_elements, selection_times, color='#adad3b', label='Selection sort')
-    plt.plot(number_of_elements, insertion_times, color='#76FA12', label='Insertion sort')
-    plt.plot(number_of_elements, pigeon_times, color='#b237a9', label='Pigeon hole sort')
-    plt.plot(number_of_elements, merge_times, color='#41F2c4', label='Merge sort')
-    plt.plot(number_of_elements, quick_times, color='#4444F2', label='Quick sort')
-    plt.xlabel('Number of elements')
-    plt.ylabel('Time taken (ms)')
-    plt.legend()
-    plt.show()
+    # plt.plot(number_of_elements, bogo_times, color='#444232', label='Bogo sort')
+    # plt.plot(number_of_elements, opt_bogo_times, color='#76D232', label='Opt Bogo sort')
+    # plt.plot(number_of_elements, bubble_times, color='#444444', label='Bubble sort')
+    # plt.plot(number_of_elements, selection_times, color='#adad3b', label='Selection sort')
+    # plt.plot(number_of_elements, insertion_times, color='#76FA12', label='Insertion sort')
+    # plt.plot(number_of_elements, pigeon_times, color='#b237a9', label='Pigeon hole sort')
+    # plt.plot(number_of_elements, merge_times, color='#41F2c4', label='Merge sort')
+    # plt.plot(number_of_elements, quick_times, color='#4444F2', label='Quick sort')
+    # plt.xlabel('Number of elements')
+    # plt.ylabel('Time taken (ms)')
+    # plt.legend()
+    # plt.show()
