@@ -154,6 +154,10 @@ def bogo_sort(l_arr):
 
 
 def opt_bogo_sort(l_arr):
+    """
+    Randomly shuffle until the first elements is put in 
+    the correct index then reduce the list size and repeat
+    """
     arr = l_arr[:]
     n = 0
     s_arr = sorted(arr)

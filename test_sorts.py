@@ -35,5 +35,8 @@ class TestSorts(unittest.TestCase):
         self.assertEqual(sorts.opt_bogo_sort([3, 4, 1, 8, 9]), [1, 3, 4, 8, 9])
         self.assertEqual(sorts.opt_bogo_sort([3, -1, 1, 0, 3]), [-1, 0, 1, 3, 3])
         
+    def test_shell_sort(self):
+        pass
+
 if __name__ == '__main__':
     unittest.main()
