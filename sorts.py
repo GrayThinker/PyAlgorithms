@@ -1,5 +1,5 @@
 """
-TODO: Radix sort, gravity sort, cocktail sort sedge sort,
+TODO: Radix sort, gravity sort, sedge sort,
 double selection sort, shell sort, comb sort,
 odd even sort, smooth sort, gnome sort, weak-heap sort
 funnel sort, cube sort, cache-oblivious distribution sort, 
@@ -12,67 +12,58 @@ from timeit import timeit
 from matplotlib import pyplot as plt
 
 
-def main(low=1, high=100, step=1, reps=1):
+def main(low=0, high=100, step=1, reps=1, min_num=0, max_num=100):
     """
     Plot each sorting function time over a range of list sizes.
     :param low: smallest list size.
     :param high: largest list size.
     :param step: size difference between subsequent lists.
     :param reps: number of repititions for timeit.
+    :param min_num: smallest number in list to be sorted.
+    :param max_num: largest number in list to be sorted.
     """
 
-    number_of_elements = list(range(low, high, step))
     bogo_times = []
     bubble_times = []
+    cocktail_times = []
     insertion_times = []
     merge_times = []
     pigeon_times = []
     selection_times = []
     quick_times = []
+    number_of_elements = list(range(low, high, step))
 
     for num in number_of_elements:
-        numbers = randomize([], num)
+        numbers = [random.randint(min_num, max_num) for _ in range(num)]
 
-        if(not test_sort(merge_sort, numbers)):  # for testing current sort
-            print("ERROR")
-            break
+        if(not test_sort(cocktail_sort, numbers)):  # for testing current sort
+            print("Error")
+            continue
 
-        bogo_times.append(time_sort('bogo_sort', numbers, reps))
+        # bogo_times.append(time_sort('bogo_sort', numbers, reps))
         bubble_times.append(time_sort('bubble_sort', numbers, reps))
-        insertion_times.append(time_sort('insertion_sort', numbers, reps))
-        merge_times.append(time_sort('merge_sort', numbers, reps))
-        pigeon_times.append(time_sort('pigeon_hole_sort', numbers, reps))
-        selection_times.append(time_sort('selection_sort', numbers, reps))
-        quick_times.append(time_sort('quick_sort', numbers, reps))
+        cocktail_times.append(time_sort('cocktail_sort', numbers, reps))
+        # insertion_times.append(time_sort('insertion_sort', numbers, reps))
+        # selection_times.append(time_sort('selection_sort', numbers, reps))
+        # merge_times.append(time_sort('merge_sort', numbers, reps))
+        # pigeon_times.append(time_sort('pigeon_hole_sort', numbers, reps))
+        # quick_times.append(time_sort('quick_sort', numbers, reps))
         print(f'Progress ({low} to {high}): {num}')
 
     print('done\n')
     
-    plt.plot(number_of_elements, bogo_times, color='#444232', label='Bogo sort')
+    # plt.plot(number_of_elements, bogo_times, color='#444232', label='Bogo sort')
     plt.plot(number_of_elements, bubble_times, color='#444444', label='Bubble sort')
-    plt.plot(number_of_elements, selection_times, color='#adad3b', label='Selection sort')
-    plt.plot(number_of_elements, insertion_times, color='#76FA12', label='Insertion sort')
-    plt.plot(number_of_elements, pigeon_times, color='#b237a9', label='Pigeon hole sort')
-    plt.plot(number_of_elements, merge_times, color='#41F2c4', label='Merge sort')
-    plt.plot(number_of_elements, quick_times, color='#4444F2', label='Quick sort')
+    plt.plot(number_of_elements, cocktail_times, color='#C7D98E', label='Cocktail sort')
+    # plt.plot(number_of_elements, insertion_times, color='#76FA12', label='Insertion sort')
+    # plt.plot(number_of_elements, selection_times, color='#adad3b', label='Selection sort')
+    # plt.plot(number_of_elements, pigeon_times, color='#b237a9', label='Pigeon hole sort')
+    # plt.plot(number_of_elements, merge_times, color='#41F2c4', label='Merge sort')
+    # plt.plot(number_of_elements, quick_times, color='#4444F2', label='Quick sort')
     plt.xlabel('Number of elements')
     plt.ylabel('Time taken (ms)')
     plt.legend()
     plt.show()
-
-
-def randomize(arr, max_element):
-    """randomize an array with repeats
-    FIXME: Might yield biased results.
-    """
-    length = len(arr)
-    arr += list(range(max_element))
-    arr += list(range(max_element//5))
-    arr += list(range(max_element//3, max_element))
-    arr += list(range(max_element//2))
-    random.shuffle(arr)
-
-    return arr[:max_element]
 
 
 def time_sort(sort, numbers, reps=10):
@@ -134,25 +125,38 @@ def bubble_sort(unsorted_list):
         num_elements -= 1
     return sorted_list
 
+def cocktail_sort(l_arr):
+    arr = l_arr[:]
+    n = 0
+    m = len(arr) - 1
 
-def insertion_sort(unsorted_list):
-    """Check if each element (i) is less than the prev while there is
-    a prev. If it is then let the prev take the current position
-    and repeat until the condition fails and put i in the final position
-    FIXME: slower than selection sort.
-    """
-    sorted_list = unsorted_list[:]
-    for i in range(1, len(sorted_list)):
-        cursor = sorted_list[i]
-        pos = i
-        while pos > 0 and sorted_list[pos - 1] > cursor:
-            # Swap the number down the list
-            sorted_list[pos] = sorted_list[pos - 1]
-            pos -= 1
-        # Break and do the final swap
-        sorted_list[pos] = cursor
-    return sorted_list
+    while n < m:
+        is_sorted = True
+        for i in range(n, m):
+            if arr[i] > arr[i+1]:
+                arr[i], arr[i+1] = arr[i+1], arr[i]
+                is_sorted = False
+        if is_sorted: break
+        m -= 1
+        is_sorted = True
+        for j in range(m, n, -1):
+            if arr[j] < arr[j -1]:
+                arr[j], arr[j-1] = arr[j-1], arr[j]
+                is_sorted = False
+        if is_sorted: break
+        n += 1
+    return arr
 
+def insertion_sort(l_arr):
+    arr = l_arr[:]
+
+    for i in range(1, len(l_arr)):
+        pointer = i
+        while pointer != 0 and arr[pointer] < arr[pointer - 1]:
+            arr[pointer], arr[pointer - 1] = arr[pointer - 1], arr[pointer]
+            pointer -= 1
+
+    return arr
 
 def merge(list_a, list_b):
     # lists must already be sorted.
@@ -166,35 +170,35 @@ def merge(list_a, list_b):
         else:
             new_list.append(list_b[j])
             j += 1
-    new_list += (list_a[i:])
-    new_list += (list_b[j:])
+    new_list += list_a[i:]
+    new_list += list_b[j:]
 
     return new_list
 
 
-def merge_sort(arr):
-    """
-    :function merge: join two lists together in ordered form
-    :var depth: number of iterations needed to construct the
-    complete list from individual elements.
-    """
-    if not len(arr): return arr  # empty list
+def merge_sort(l_arr):
+    arr = l_arr[:]
 
+    if len(arr) <= 1: return arr  # empty/sinlge value list
+
+    # break list into groups of 2
     broken_list = [arr[i:i + 2] for i in range(0, len(arr), 2)]
+
+    # sort each group
     for n in broken_list:
         if (len(n) == 2 and n[0] > n[1]):
             n[0], n[1] = n[1], n[0]
 
-    depth = int(math.log(len(arr), 2)) + 1
-    while(depth):
-        temp_list = []
+    # while there exists multiple groups
+    while len(broken_list) != 1:
+        arr = []
         for i in range(0, len(broken_list), 2):
-            if (i != len(broken_list) - 1):
-                # if this is not the last broken list section then
-                temp_list.append(merge(broken_list[i], broken_list[i+1]))
-            else: broken_list = temp_list.append(broken_list[i])
-        broken_list = temp_list
-        depth -= 1
+            if i == len(broken_list)-1:  # last group
+                arr.append(broken_list[i])
+                break
+            arr.append(merge(broken_list[i], broken_list[i+1]))
+            
+        broken_list = arr
     return broken_list[0]
 
 
@@ -208,7 +212,7 @@ def pigeon_hole_sort(nums):
     """
 
     ls = nums[:]
-    if not len(ls): return ls  # empty list
+    if len(ls) <= 1: return ls  # empty/single valued list
     sorted_ls = []
 
     max_num = max(ls)
@@ -223,10 +227,10 @@ def pigeon_hole_sort(nums):
         pigeon_hole[n - min_num][1] += 1
 
     # Loop through each pigeon hole and pop out any values into sorted list
-    for count in range(hole_size):
-        while pigeon_hole[count][1] > 0:
-            sorted_ls.append(pigeon_hole[count][0])
-            pigeon_hole[count][1] -= 1
+    for hole_index in range(hole_size):
+        while pigeon_hole[hole_index][1] > 0:
+            sorted_ls.append(pigeon_hole[hole_index][0])
+            pigeon_hole[hole_index][1] -= 1
 
     return sorted_ls
 
@@ -257,4 +261,4 @@ def quick_sort(l_arr):
 
 
 if __name__ == "__main__":
-    main()
+    main(max_num=100, min_num=0, high=500, step=1, low=0)
