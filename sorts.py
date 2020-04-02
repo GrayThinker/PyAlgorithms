@@ -6,90 +6,7 @@ funnel sort, cube sort, cache-oblivious distribution sort,
 multi-key quick sort, tournament sort, splay sort.
 
 """
-import math
 import random
-from timeit import timeit
-from matplotlib import pyplot as plt
-
-
-def main(low=0, high=100, step=1, reps=1, min_num=0, max_num=100):
-    """
-    Plot each sorting function time over a range of list sizes.
-    :param low: smallest list size.
-    :param high: largest list size.
-    :param step: size difference between subsequent lists.
-    :param reps: number of repititions for timeit.
-    :param min_num: smallest number in list to be sorted.
-    :param max_num: largest number in list to be sorted.
-    """
-
-    bogo_times = []
-    bubble_times = []
-    cocktail_times = []
-    insertion_times = []
-    merge_times = []
-    pigeon_times = []
-    selection_times = []
-    quick_times = []
-    number_of_elements = list(range(low, high, step))
-
-    for num in number_of_elements:
-        numbers = [random.randint(min_num, max_num) for _ in range(num)]
-
-        if(not test_sort(cocktail_sort, numbers)):  # for testing current sort
-            print("Error")
-            continue
-
-        # bogo_times.append(time_sort('bogo_sort', numbers, reps))
-        bubble_times.append(time_sort('bubble_sort', numbers, reps))
-        cocktail_times.append(time_sort('cocktail_sort', numbers, reps))
-        # insertion_times.append(time_sort('insertion_sort', numbers, reps))
-        # selection_times.append(time_sort('selection_sort', numbers, reps))
-        # merge_times.append(time_sort('merge_sort', numbers, reps))
-        # pigeon_times.append(time_sort('pigeon_hole_sort', numbers, reps))
-        # quick_times.append(time_sort('quick_sort', numbers, reps))
-        print(f'Progress ({low} to {high}): {num}')
-
-    print('done\n')
-    
-    # plt.plot(number_of_elements, bogo_times, color='#444232', label='Bogo sort')
-    plt.plot(number_of_elements, bubble_times, color='#444444', label='Bubble sort')
-    plt.plot(number_of_elements, cocktail_times, color='#C7D98E', label='Cocktail sort')
-    # plt.plot(number_of_elements, insertion_times, color='#76FA12', label='Insertion sort')
-    # plt.plot(number_of_elements, selection_times, color='#adad3b', label='Selection sort')
-    # plt.plot(number_of_elements, pigeon_times, color='#b237a9', label='Pigeon hole sort')
-    # plt.plot(number_of_elements, merge_times, color='#41F2c4', label='Merge sort')
-    # plt.plot(number_of_elements, quick_times, color='#4444F2', label='Quick sort')
-    plt.xlabel('Number of elements')
-    plt.ylabel('Time taken (ms)')
-    plt.legend()
-    plt.show()
-
-
-def time_sort(sort, numbers, reps=10):
-    # FIXME: What if numbers was *number i.e. *args so this works
-    # on any function, not just sorts. Then main_code would be
-    # main_code = f"{sort}({[n for n in numbers[0]]})"
-    main_code = f"{sort}({numbers})"
-    # TODO: adding setup_code="" parameter. 
-    # setup_code = f"from __main__ import {sort}, {numbers}"
-
-    time_taken = timeit(stmt=main_code,
-                        number=reps,
-                        globals=globals()) / reps
-    
-    return time_taken * 1000  # milliseconds
-
-
-def test_sort(sort, numbers, show=False):
-    sorted_numbers = sorted(numbers)
-    test_numbers = sort(numbers)
-    if(show): print(f'result: {test_numbers}')
-
-    if (sorted_numbers == test_numbers): return True
-    
-    return False
-
 
 def bogo_sort(l_arr, optimize=True):
     arr = l_arr[:]
@@ -125,6 +42,7 @@ def bubble_sort(unsorted_list):
         num_elements -= 1
     return sorted_list
 
+
 def cocktail_sort(l_arr):
     arr = l_arr[:]
     n = 0
@@ -147,19 +65,22 @@ def cocktail_sort(l_arr):
         n += 1
     return arr
 
+
 def insertion_sort(l_arr):
     arr = l_arr[:]
+    if len(arr) <= 1: return arr
 
-    for i in range(1, len(l_arr)):
+    for i in range(1, len(arr)):
         pointer = i
-        while pointer != 0 and arr[pointer] < arr[pointer - 1]:
+        while pointer > 0 and arr[pointer] < arr[pointer - 1]:
             arr[pointer], arr[pointer - 1] = arr[pointer - 1], arr[pointer]
             pointer -= 1
 
     return arr
 
+
 def merge(list_a, list_b):
-    # lists must already be sorted.
+    """lists must already be sorted."""
     new_list = []
     i = 0
     j = 0
@@ -258,7 +179,3 @@ def quick_sort(l_arr):
         elif val == pivot: equal_ls.append(val)
         else: greater_ls.append(val)
     return quick_sort(less_ls) + equal_ls + quick_sort(greater_ls)
-
-
-if __name__ == "__main__":
-    main(max_num=100, min_num=0, high=500, step=1, low=0)

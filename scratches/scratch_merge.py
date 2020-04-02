@@ -1,3 +1,133 @@
+# from timeit import timeit
+# from functools import lru_cache
+# import random
+# from matplotlib import pyplot as plt
+
+# def time_sort(sort, numbers, reps=10):
+#     # FIXME: What if numbers was *number i.e. *args so this works
+#     # on any function, not just sorts. Then main_code would be
+#     # main_code = f"{sort}({[n for n in numbers[0]]})"
+#     main_code = f"{sort}({numbers})"
+#     # TODO: adding setup_code="" parameter. 
+#     # setup_code = f"from __main__ import {sort}, {numbers}"
+
+#     time_taken = timeit(stmt=main_code,
+#                         number=reps,
+#                         globals=globals()) / reps
+    
+#     return time_taken * 1000  # milliseconds
+
+# @lru_cache(maxsize=None)
+# def merge1(list_a, list_b):
+#     # lists must already be sorted.
+#     new_list = []
+#     i = 0
+#     j = 0
+#     while (i < len(list_a) and j < len(list_b)):
+#         if(list_a[i] < list_b[j]):
+#             new_list.append(list_a[i])
+#             i += 1
+#         else:
+#             new_list.append(list_b[j])
+#             j += 1
+#     new_list += list_a[i:]
+#     new_list += list_b[j:]
+
+#     return new_list
+
+# @lru_cache(maxsize=None)
+# def merge_sort1(l_arr):
+#     arr = l_arr[:]
+
+#     if len(arr) <= 1: return arr  # empty/sinlge value list
+
+#     # break list into groups of 2
+#     broken_list = [arr[i:i + 2] for i in range(0, len(arr), 2)]
+
+#     # sort each group
+#     for n in broken_list:
+#         if (len(n) == 2 and n[0] > n[1]):
+#             n[0], n[1] = n[1], n[0]
+
+#     # while there exists multiple groups
+#     while len(broken_list) != 1:
+#         arr = []
+#         for i in range(0, len(broken_list), 2):
+#             if i == len(broken_list)-1:  # last group
+#                 arr.append(broken_list[i])
+#                 break
+#             arr.append(merge1(broken_list[i], broken_list[i+1]))
+            
+#         broken_list = arr
+#     return broken_list[0]
+
+# def merge2(list_a, list_b):
+#     # lists must already be sorted.
+#     new_list = []
+#     i = 0
+#     j = 0
+#     while (i < len(list_a) and j < len(list_b)):
+#         if(list_a[i] < list_b[j]):
+#             new_list.append(list_a[i])
+#             i += 1
+#         else:
+#             new_list.append(list_b[j])
+#             j += 1
+#     new_list += list_a[i:]
+#     new_list += list_b[j:]
+
+#     return new_list
+
+
+# def merge_sort2(l_arr):
+#     arr = l_arr[:]
+
+#     if len(arr) <= 1: return arr  # empty/sinlge value list
+
+#     # break list into groups of 2
+#     broken_list = [arr[i:i + 2] for i in range(0, len(arr), 2)]
+
+#     # sort each group
+#     for n in broken_list:
+#         if (len(n) == 2 and n[0] > n[1]):
+#             n[0], n[1] = n[1], n[0]
+
+#     # while there exists multiple groups
+#     while len(broken_list) != 1:
+#         arr = []
+#         for i in range(0, len(broken_list), 2):
+#             if i == len(broken_list)-1:  # last group
+#                 arr.append(broken_list[i])
+#                 break
+#             arr.append(merge2(broken_list[i], broken_list[i+1]))
+            
+#         broken_list = arr
+#     return broken_list[0]
+
+
+# merge1_times = []
+# merge2_times = []
+# number_of_elements = list(range(0, 10, 1))
+# for num in number_of_elements:
+#     numbers = [random.randint(0, 500) for _ in range(num)]
+#     merge2_times.append(timeit('merge_sort2(numbers)', number=10, globals=globals())/100)
+#     # merge1_times.append(timeit('merge_sort1(numbers)', number=100, globals=globals())/100)
+#     print(merge_sort1(numbers))
+#     print(f'Progress ({0} to {1000}): {num}')
+# print('done\n')
+
+
+# # plt.plot(number_of_elements, merge1_times, color='#41F2c4', label='Merge sort with memo')
+# plt.plot(number_of_elements, merge2_times, color='#777777', label='Merge sort no memo')
+# plt.xlabel('Number of elements')
+# plt.ylabel('Time taken (ms)')
+# plt.legend()
+# plt.show()
+
+
+
+
+
 # My first merge sort implementation
 # TIL: len(arr) // 2 is much faster than list(len(arr)/2)
 # but has more use case limitations

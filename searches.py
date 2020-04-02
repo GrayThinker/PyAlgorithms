@@ -4,7 +4,7 @@
 
 def binary_search(val, ls):
     """
-
+    Use log(n) complexity binary search for val in ls
     :param val: value to find in list ls
     :param ls: list of numbers to search through
     :return: index of first instance of val found in ls
