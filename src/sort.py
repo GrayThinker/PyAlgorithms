@@ -6,6 +6,9 @@ funnel sort, cube sort, cache-oblivious distribution sort,
 multi-key quick sort, tournament sort, splay sort.
 
 """
+"""
+TODO: Memory profiler
+"""
 import random
 
 def bogo_sort(l_arr, optimize=True):
@@ -97,10 +100,23 @@ def merge(list_a, list_b):
     return new_list
 
 
+def rec_merge_sort(l_arr):
+    if len(l_arr) <=1: return l_arr
+
+    if len(l_arr) ==2:
+        if l_arr[0] > l_arr[1]:
+            return [l_arr[1], l_arr[0]]
+        else:
+            return l_arr
+    
+    half = len(l_arr)//2
+    return merge(merge_sort(l_arr[:half]), merge_sort(l_arr[half:]))
+
+
 def merge_sort(l_arr):
     arr = l_arr[:]
 
-    if len(arr) <= 1: return arr  # empty/sinlge value list
+    if len(arr) <= 1: return arr  # empty/single value list
 
     # break list into groups of 2
     broken_list = [arr[i:i + 2] for i in range(0, len(arr), 2)]
@@ -179,3 +195,6 @@ def quick_sort(l_arr):
         elif val == pivot: equal_ls.append(val)
         else: greater_ls.append(val)
     return quick_sort(less_ls) + equal_ls + quick_sort(greater_ls)
+
+
+

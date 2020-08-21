@@ -1,4 +1,4 @@
-from sorts import *
+from src.sort import *
 from timeit import timeit
 
 def time_sort(sort, numbers, reps=10):
