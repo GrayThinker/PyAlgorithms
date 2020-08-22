@@ -1,0 +1,94 @@
+import pygame
+import random
+import time
+
+class display:
+
+    def __init__(self, width=600, height=600, number_of_elements=100, repeats=False):
+        if (number_of_elements > width):
+            raise ValueError("Wisplay width must be larger than number of elements")
+        self.width = width
+        self.height = height
+        self.number_of_elements = number_of_elements
+        self.div = width//number_of_elements
+        self.repeats = repeats
+        
+        
+        if self.repeats:
+            self.array = [random.randint(self.height) for _ in range(self.number_of_elements)]
+        else:
+            self.array = random.sample(range(0,self.height), self.number_of_elements)
+
+    def show(self, p=-1):
+        pygame.draw.rect(self.window, (0, 0, 0), (0, 0, self.width, self.height))
+        i, j = 0, 0
+        while(i<self.width):
+            pygame.draw.rect(self.window, (255, 255, 255), (i, 0, self.width//self.number_of_elements, self.array[j]))
+            i += self.div
+            j += 1
+        if (p != -1):
+            pygame.draw.rect(self.window, (0, 255, 0), (self.div*p, 0, self.width//self.number_of_elements, self.array[p]))
+        pygame.display.update()
+        # TODO: add color selection
+
+    def make_window(self):
+        self.window = pygame.display.set_mode((self.width, self.height))
+        # make wrapper
+
+    def close_window(self):
+        pygame.quit()
+
+    def bubble_sort(self):
+        random.shuffle(self.array) # TODO: join in algo_init
+        self.make_window()  # TODO: put in algo_init
+
+        n  = self.number_of_elements
+        while(n):
+            for i in range(1, n):
+                if self.array[i-1] > self.array[i]:
+                    self.array[i-1], self.array[i] = self.array[i], self.array[i-1]
+                    self.show(i)
+            n -= 1
+        self.close_window()
+    
+    def insertion_sort(self):
+        random.shuffle(self.array)
+        self.make_window()
+        for i in range(1, self.number_of_elements):
+            p = i
+            while(p > 0 and self.array[p-1] > self.array[p]):
+                self.array[p-1], self.array[p] = self.array[p], self.array[p-1]
+                self.show(p)
+                p -= 1
+        self.close_window()
+
+    def bogo_sort(self, optimize=True):
+        self.make_window()
+        random.shuffle(self.array)
+
+        s_arr = sorted(self.array)
+
+        if optimize:
+            n = 0
+            while(n < self.number_of_elements):
+                copy = self.array[n:]
+                random.shuffle(copy)
+                self.array[n:] = copy
+                # random.shuffle(self.array[n:])
+                self.show()
+                # self.array[n:] = copy
+                if self.array[n] == s_arr[n]:
+                    n += 1
+        # self.close_window()
+        else:
+            while(self.array != sorted(self.array)):
+                random.shuffle(self.array)
+                self.show()
+        time.sleep(5)
+
+
+if __name__ == '__main__':
+    win = display(number_of_elements=100)
+    # win.bogo_sort()
+    win.bubble_sort()
+    win.insertion_sort()

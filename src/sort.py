@@ -5,8 +5,6 @@ odd even sort, smooth sort, gnome sort, weak-heap sort
 funnel sort, cube sort, cache-oblivious distribution sort, 
 multi-key quick sort, tournament sort, splay sort.
 
-"""
-"""
 TODO: Memory profiler
 """
 import random
@@ -30,20 +28,24 @@ def bogo_sort(l_arr, optimize=True):
     return arr
 
 
-def bubble_sort(unsorted_list):
-    sorted_list = unsorted_list[:]
+def bubble_sort(l_arr):
+    """
+    Worst-case: O(n^2) comparisons, O(n^2) swaps
+    Best-case: O(n) comparisons, O(1) swaps
+    Worst-case space: O(n) total, O(1) auxiliary
+    """
+    arr = l_arr[:]
     is_sorted = True
-    num_elements = len(sorted_list)
-    while num_elements > 1:
-        for i in range(1, num_elements):
-            if sorted_list[i] < sorted_list[i - 1]:
-                sorted_list[i], sorted_list[i - 1] = \
-                sorted_list[i - 1], sorted_list[i]
+    n = len(arr)
+    while n > 1:
+        for i in range(1, n):
+            if arr[i] < ar[i - 1]:
+                arr[i], arr[i - 1] = arr[i - 1], arr[i]
                 is_sorted = False
         if is_sorted: break
         is_sorted = True
-        num_elements -= 1
-    return sorted_list
+        n -= 1
+    return arr
 
 
 def cocktail_sort(l_arr):
@@ -101,16 +103,12 @@ def merge(list_a, list_b):
 
 
 def rec_merge_sort(l_arr):
-    if len(l_arr) <=1: return l_arr
-
-    if len(l_arr) ==2:
-        if l_arr[0] > l_arr[1]:
-            return [l_arr[1], l_arr[0]]
-        else:
-            return l_arr
+    arr = l_arr[:]
+    if len(arr) <=1: 
+        return arr
     
-    half = len(l_arr)//2
-    return merge(merge_sort(l_arr[:half]), merge_sort(l_arr[half:]))
+    half = len(arr)//2
+    return merge(merge_sort(arr[:half]), merge_sort(arr[half:]))
 
 
 def merge_sort(l_arr):
@@ -139,37 +137,35 @@ def merge_sort(l_arr):
     return broken_list[0]
 
 
-def pigeon_hole_sort(nums):
+def pigeon_hole_sort(l_arr):
     """
+    Worst-case: O(N+n) where N = max(l_arr)-min(l_arr) and n  = len(l_arr)
     Best case: Number of key values = number of elements.
-    Only works with integers.
     Memory intensive.
-    :param nums: list to be sorted
-    :return: sorted list
     """
 
-    ls = nums[:]
-    if len(ls) <= 1: return ls  # empty/single valued list
-    sorted_ls = []
+    arr = l_arr[:]
+    if len(arr) <= 1: return arr
+    s_arr = []
 
-    max_num = max(ls)
-    min_num = min(ls)
+    max_num = max(arr)
+    min_num = min(arr)
     hole_size = max_num - min_num + 1
     pigeon_hole = [[0, 0] for i in range(hole_size)]
 
     # Each element is added to pigeon hole at index element - min_num
     # The number of elements in a given hole is incremented
-    for n in ls:
+    for n in arr:
         pigeon_hole[n - min_num][0] = n
         pigeon_hole[n - min_num][1] += 1
 
     # Loop through each pigeon hole and pop out any values into sorted list
     for hole_index in range(hole_size):
         while pigeon_hole[hole_index][1] > 0:
-            sorted_ls.append(pigeon_hole[hole_index][0])
+            s_arr.append(pigeon_hole[hole_index][0])
             pigeon_hole[hole_index][1] -= 1
 
-    return sorted_ls
+    return s_arr
 
 
 def selection_sort(ls):
