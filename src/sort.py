@@ -169,6 +169,12 @@ def pigeon_hole_sort(l_arr):
 
 
 def selection_sort(ls):
+    """
+    worst case: O(n^2) comparisons, O(n) swaps
+    best case: O(n) comparisons, O(1) swaps
+    Average: O(n^2) comparisons, O(n) swaps
+    Worst space: O(1) auxiliary
+    """
     nums = ls[:]
     n = 0
     while n < len(nums):

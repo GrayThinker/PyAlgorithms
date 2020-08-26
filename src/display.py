@@ -4,7 +4,7 @@ import time
 
 class display:
 
-    def __init__(self, width=600, height=600, number_of_elements=100, repeats=False):
+    def __init__(self, width=600, height=600, number_of_elements=100, repeats=True):
         if (number_of_elements > width):
             raise ValueError("Wisplay width must be larger than number of elements")
         self.width = width
@@ -15,7 +15,7 @@ class display:
         
         
         if self.repeats:
-            self.array = [random.randint(self.height) for _ in range(self.number_of_elements)]
+            self.array = [random.randint(0, self.height) for _ in range(self.number_of_elements)]
         else:
             self.array = random.sample(range(0,self.height), self.number_of_elements)
 
@@ -86,9 +86,23 @@ class display:
                 self.show()
         time.sleep(5)
 
+    def selection_sort(self):
+        random.shuffle(self.array)
+        self.make_window()
+        n = 0
+        while n < len(self.array):
+            min_index = n
+            for i in range(n, self.number_of_elements):
+                if self.array[i] < self.array[min_index]:
+                    min_index = i
+            self.array[n], self.array[min_index] = self.array[min_index], self.array[n]
+            self.show()
+            n += 1
+        self.close_window()
 
 if __name__ == '__main__':
-    win = display(number_of_elements=100)
+    win = display(number_of_elements=1000, width=1000, height=1000)
+    win.selection_sort()
     # win.bogo_sort()
-    win.bubble_sort()
-    win.insertion_sort()
+    # win.bubble_sort()
+    # win.insertion_sort()
