@@ -39,7 +39,7 @@ def bubble_sort(l_arr):
     n = len(arr)
     while n > 1:
         for i in range(1, n):
-            if arr[i] < ar[i - 1]:
+            if arr[i] < arr[i - 1]:
                 arr[i], arr[i - 1] = arr[i - 1], arr[i]
                 is_sorted = False
         if is_sorted: break
@@ -111,7 +111,9 @@ def rec_merge_sort(l_arr):
     return merge(merge_sort(arr[:half]), merge_sort(arr[half:]))
 
 
-def merge_sort(l_arr):
+def merge_sort(l_arr, rec=False):
+    if rec:
+        return rec_merge_sort(l_arr)
     arr = l_arr[:]
 
     if len(arr) <= 1: return arr  # empty/single value list
@@ -199,4 +201,26 @@ def quick_sort(l_arr):
     return quick_sort(less_ls) + equal_ls + quick_sort(greater_ls)
 
 
+def cycle_sort(l_arr):
+    arr = l_arr[:]
+    pos = 0
+    i = arr[pos]
+    while pos < len(arr) - 1:
+        changed = False
+        counter = 0
+        for val in arr[pos:]:
+            if val < i:
+                counter += 1
+                changed = True
+        if changed:
+            while arr[pos + counter] == i:  # for duplicates
+                counter += 1
+            i, arr[pos + counter] = arr[pos + counter], i
+            arr[pos] = float('inf')
+        else:
+            if arr[pos + counter] == float('inf'):
+                arr[pos + counter] = i
+            pos += 1
+            i = arr[pos]
+    return arr
 

@@ -3,6 +3,13 @@ import random
 import time
 
 class display:
+    BLUE = (0, 0, 255)
+    BLACK = (0, 0, 0)
+    WHITE = (255, 255, 255)
+    RED = (255, 0, 0)
+    GREEN = (0, 255, 0)
+    PURPLE = (255, 0, 255)
+    BACKGROUND = BLACK
 
     def __init__(self, width=600, height=600, number_of_elements=100, repeats=True):
         if (number_of_elements > width):
@@ -13,17 +20,17 @@ class display:
         self.div = width//number_of_elements
         self.repeats = repeats
         
-        
         if self.repeats:
             self.array = [random.randint(0, self.height) for _ in range(self.number_of_elements)]
         else:
             self.array = random.sample(range(0,self.height), self.number_of_elements)
 
     def show(self, p=-1):
-        pygame.draw.rect(self.window, (0, 0, 0), (0, 0, self.width, self.height))
+        pygame.draw.rect(self.window, self.BACKGROUND, (0, 0, self.width, self.height))
         i, j = 0, 0
         while(i<self.width):
-            pygame.draw.rect(self.window, (255, 255, 255), (i, 0, self.width//self.number_of_elements, self.array[j]))
+            if self.array[j] != float('inf'):  # cycle sort
+                pygame.draw.rect(self.window, (255, 255, 255), (i, 0, self.width//self.number_of_elements, self.array[j]))
             i += self.div
             j += 1
         if (p != -1):
@@ -100,8 +107,35 @@ class display:
             n += 1
         self.close_window()
 
+    def cycle_sort(self):
+        random.shuffle(self.array)
+        self.make_window()
+        pos = 0
+        i = self.array[pos]
+        while pos < len(self.array) - 1:
+            changed = False
+            counter = 0
+            for val in self.array[pos:]:
+                if val < i:
+                    counter += 1
+                    changed = True
+            if changed:
+                while self.array[pos + counter] == i:  # for duplicates
+                    counter += 1
+                i, self.array[pos + counter] = self.array[pos + counter], i
+                self.array[pos] = float('inf')
+            else:
+                if self.array[pos + counter] == float('inf'):
+                    self.array[pos + counter] = i
+                pos += 1
+                i = self.array[pos]            
+            self.show()
+
+
 if __name__ == '__main__':
-    win = display(number_of_elements=1000, width=1000, height=1000)
+    win = display(number_of_elements=150, width=1000, height=1000)
+    # print(win.array)
+    # win.cycle_sort()
     win.selection_sort()
     # win.bogo_sort()
     # win.bubble_sort()
