@@ -12,14 +12,17 @@ def time_sort(sort, numbers, reps=10):
     return time_taken * 1000  # milliseconds
 
 
-def test_sort(sort, numbers, show=False):
+def test_sort(numbers, *args, show=False):
     sorted_numbers = sorted(numbers)
-    test_numbers = sort(numbers)
-    
-    if(show):
-        print(f'result: {test_numbers}')
 
-    if (sorted_numbers == test_numbers): 
-        return True
+    for sort in args:
+        test_numbers = sort(numbers)
+        
+        if(show):
+            print(f'{sort} result: {test_numbers}')
+
+        if (sorted_numbers != test_numbers):
+            print(f'{sort} error')
+            return False
     
-    return False
+    return True

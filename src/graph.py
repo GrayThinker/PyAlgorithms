@@ -1,25 +1,26 @@
 class Node():
     def __init__(self, value):
         self.value = value
+    
+    def __repr__(self):
+        return self.value
+    
+class Linked_list_node(Node):
+    def __init__(self, value, next=None):
+        super().__init__(value)
+        self.next = next
+
+class BST_node(Node):
+    def __init__(self, value):
+        super.__init__(value)
         self.left = None
         self.right = None
 
-    @staticmethod
-    def insert(root, node):
-        if root == None:
-            root = node
-        elif node.value < root.value:
-            insert(root.left, node)
-        else:
-            insert(root.right, node)
-    
-    @staticmethod
-    def inorder(root):
-        if root:
-            inorder(root.left)
-            print(root.value)
-            inorder(root.right)
+class Graph_node(Node):
+    pass
 
-r = Node(100)
-r.insert(r,  Node(12))
-r.inorder(r)
+class Heap_node(Node):
+    pass
+
+class RBT_node(Node):
+    pass

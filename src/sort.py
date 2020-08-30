@@ -1,7 +1,7 @@
 """
 TODO: Radix sort, gravity sort, sedge sort,
-double selection sort, shell sort, comb sort,
-odd even sort, smooth sort, gnome sort, weak-heap sort
+double selection sort, shell sort, comb sort, bitonic, heap,
+odd even sort, smooth sort, gnome sort, weak-heap sort, bucket,
 funnel sort, cube sort, cache-oblivious distribution sort, 
 multi-key quick sort, tournament sort, splay sort.
 
@@ -10,6 +10,10 @@ TODO: Memory profiler
 import random
 
 def bogo_sort(l_arr, optimize=True):
+    """
+    optimize: bool whether or not to optimize
+    O(n!)
+    """
     arr = l_arr[:]
     if optimize:
         n = 0

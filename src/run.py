@@ -28,9 +28,10 @@ def main(low=500, high=1000, step=10, reps=1, min_num=0, max_num=10000):
 
     for num in number_of_elements:
         numbers = [random.randint(min_num, max_num) for _ in range(num)]
-
-        if(not (test_sort(cycle_sort, numbers)):  # for testing current sort
-            raise ValueError("Array not sorted")
+        
+        # print(test_sort(numbers, cycle_sort, selection_sort, merge_sort))
+        # if(not test_sort(cycle_sort, numbers)):  # for testing current sort
+            # raise ValueError("Array not sorted")
 
         
         # cycle_times.append(time_sort('cycle_sort', numbers, reps))
@@ -58,10 +59,10 @@ def main(low=500, high=1000, step=10, reps=1, min_num=0, max_num=10000):
     # plt.plot(number_of_elements, merge_times, color='#41F2c4', label='Merge sort')
     # plt.plot(number_of_elements, quick_times, color='#4444F2', label='Quick sort')
     
-    plt.xlabel('Number of elements')
-    plt.ylabel('Time taken (ms)')
-    plt.legend()
-    plt.show()
+    # plt.xlabel('Number of elements')
+    # plt.ylabel('Time taken (ms)')
+    # plt.legend()
+    # plt.show()
 
 if __name__ == "__main__":
     main()
