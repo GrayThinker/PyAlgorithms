@@ -228,3 +228,18 @@ def cycle_sort(l_arr):
             i = arr[pos]
     return arr
 
+
+def pancake_sort(l_arr):
+    arr = l_arr.copy()
+    cur = 0
+    length = len(arr)
+    while cur < length:
+        min_idx = arr[cur:].index(min(arr[cur:])) + cur
+        if cur != min_idx:  # or remove +cur and check min_idx != 0
+            if min_idx != length - 1:
+                arr[min_idx:] = reversed(arr[min_idx:])
+            arr[cur:] = reversed(arr[cur:])
+        cur += 1
+    
+    return arr
+
