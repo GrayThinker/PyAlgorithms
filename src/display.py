@@ -131,12 +131,27 @@ class display:
                 i = self.array[pos]            
             self.show()
 
+    def pancake_sort(self):
+        random.shuffle(self.array)
+        self.make_window()
+        cur = 0
+        length = len(self.array)
+        while cur < length:
+            min_idx = self.array[cur:].index(min(self.array[cur:])) + cur
+            if cur != min_idx:  # or remove +cur and check min_idx != 0
+                if min_idx != length - 1:
+                    self.array[min_idx:] = reversed(self.array[min_idx:])
+                    self.show()
+                self.array[cur:] = reversed(self.array[cur:])
+                self.show()
+            cur += 1
 
 if __name__ == '__main__':
-    win = display(number_of_elements=150, width=1000, height=1000)
+    win = display(number_of_elements=1000, width=1000, height=1000)
     # print(win.array)
     # win.cycle_sort()
-    win.selection_sort()
+    win.pancake_sort()
+    # win.selection_sort()
     # win.bogo_sort()
     # win.bubble_sort()
     # win.insertion_sort()
