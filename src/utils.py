@@ -26,3 +26,10 @@ def test_sort(numbers, *args, show=False):
             return False
     
     return True
+
+def exclude(l_arr, val):
+    arr = [*l_arr]
+    if val in arr:
+        arr.remove(val)
+    return arr
+

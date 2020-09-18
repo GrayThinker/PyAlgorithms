@@ -45,6 +45,8 @@ class display:
     def close_window(self):
         pygame.quit()
 
+# Algorithms
+
     def bubble_sort(self):
         random.shuffle(self.array) # TODO: join in algo_init
         self.make_window()  # TODO: put in algo_init
@@ -150,7 +152,7 @@ if __name__ == '__main__':
     win = display(number_of_elements=1000, width=1000, height=1000)
     # print(win.array)
     # win.cycle_sort()
-    win.pancake_sort()
+    # win.pancake_sort()
     # win.selection_sort()
     # win.bogo_sort()
     # win.bubble_sort()
