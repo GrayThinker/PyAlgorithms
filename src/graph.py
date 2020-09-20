@@ -11,6 +11,7 @@ class Graph:
         self.is_directed = is_directed
         self.has_loops = has_loops
 
+        # dictionary format {node:set(all_edges(node))}
         if not graph_dict:
             self.graph = {}
         else:
@@ -51,8 +52,11 @@ class Graph:
             return [node for node in self.graph]
         return self.neighbors(vertex)
     
+    #TODO: Implement
+    def add_edge(self, vertex1, vertex2):
+        pass
 
-    def gen_edges(self):
+    def all_edges(self):
         edges = []
         for node in self.graph:
             for neighbor in self.graph[node]:
@@ -62,7 +66,7 @@ class Graph:
  
     def edges(self, vertex=None):
         if not vertex:
-            return self.gen_edges()
+            return self.all_edges()
             # use tuple instead of set in case of directed graph
         return [(vertex, neighbor) for neighbor in self.graph[vertex]]
 
@@ -74,6 +78,11 @@ class Graph:
                 isolated.add(node)
         return isolated
     
+    #TODO: Implement
+    def set_directed(self):
+        pass
+
+
     #TODO: if no vertex is passed, generate the degrees for all nodes
     def degree(self, vertex):
         return len(self.graph[vertex])
@@ -81,12 +90,30 @@ class Graph:
     def neighbors(self, vertex):
         return self.graph[vertex]
 
+
+
+class Node:
+    def __init__(self, value, edges=set()):
+        self.value = value
+        self.edges = edges
+
+    # edges should be two value lists where the first
+    # value is the terminal vertex of type node 
+    # and the second is the weight
+    def add_neighbor(self, neighbor, weight=1):
+        self.edges.add([neighbor, weight])
+
+
+
+
+
 def random_graph(alphabet=alphabet, min_degree=0, max_degree=round(len(alphabet)*0.75)):
     d = {}
     for i in alphabet:
         d.update({i : [random.choice(exclude(alphabet, i)) for _ in range(random.randint(min_degree, max_degree))]})
     g = Graph(d)
     return g
+
 
 if __name__ == "__main__":
     g = random_graph()
