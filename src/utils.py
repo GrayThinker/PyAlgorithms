@@ -1,5 +1,8 @@
 from src.sort import *
+from src.graph import Graph
 from timeit import timeit
+
+alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l"]
 
 def time_sort(sort, numbers, reps=10):
     main_code = f"{sort}({numbers})"
@@ -33,3 +36,9 @@ def exclude(l_arr, val):
         arr.remove(val)
     return arr
 
+def random_graph(alphabet=alphabet, min_degree=0, max_degree=round(len(alphabet)*0.75)):
+    d = {}
+    for i in alphabet:
+        d.update({i : [random.choice(exclude(alphabet, i)) for _ in range(random.randint(min_degree, max_degree))]})
+    g = Graph(d)
+    return g

@@ -7,7 +7,7 @@ def long_desc():
 
 setup(
     name="pyalgo",
-    version='0.0.1',
+    version='0.0.2',
     description="Python algorithms and structures",
     long_description=long_desc(),
     url="https://github.com/GrayThinker/PyAlgorithms",
