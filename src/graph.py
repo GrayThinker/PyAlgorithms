@@ -1,124 +1,129 @@
-# from typing import List
-import random
-# from src.utils import *
+class node:
+    def __init__(self, value, **attr):
+        self.value = value
+        for key, val in attr.items():
+            self.key = val
+    
+    def __lt__(self, other):
+        return self.value < other.value
 
-#FIXME: consistent naming (vertex and node), return values should be all list or set
+    def __le__(self, other):
+        return self.value <= other.value
 
+    def __gt__(self, other):
+        return self.value > other.value
+
+    def __ge__(self, other):
+        return self.value >= other.value
+
+    def __eq__(self, other):
+        return self.value == other.value
+    
+    def __repr__(self):
+        return str(self.value)
+
+    def __hash__(self):
+        return hash(self.value)
+    
+class graph_node(node):
+    def __init__(self, value, edges=dict()):
+        """
+            edges = {graph_node : **edge_properties}
+        """
+        try:
+            assert type(edges) == type(dict())
+        except AssertionError:
+            print("Must be a dictionairy")
+            raise
+        super().__init__(value, edges=edges)
+
+
+class BST_node(node):
+    def __init__(self, value, left=None, right=None):
+        try:
+            assert left < value and value < right
+        except AssertionError:
+            print("left node must be less than current node which must be lest the right node")
+
+        super().__init__(value, left=left, right=right)
 
 
 class Graph:
-    def __init__(self, is_directed=False, has_loops=False):
-        self.is_directed = is_directed
-        self.has_loops = has_loops
-        self.vertices = {}
-        self._clean()
+    def __init__(self):
+        self.graph = dict()
+
+    def __getitem__(self, key):
+        # create temp graph node
+        return self.graph.__getitem__(key)
+
+    def __clean__(self):
+        for node in self.graph.keys():
+            for pot_node in self.graph[node]:
+                if pot_node not in self.graph:
+                    self.graph[pot_node] = dict()
+                self.graph[pot_node][node] = self.graph[node][pot_node]
+
+    def add_node(self, new_node, edges=dict()):
+        if new_node in self.graph:
+            raise
+        self.graph[new_node] = edges
+        # self.__clean__()
+        for potential_node in edges.keys():
+            if potential_node not in self.graph:
+                self.graph[potential_node] = dict()
+            self.graph[potential_node][new_node] = edges[potential_node]
     
+    def add_edge(self, node_a, node_b, **edge_properties):
+        if not self.has_node(node_a):
+            self.graph[node_a] = dict()
+        if not self.has_node(node_b):
+            self.graph[node_b] = dict()
+        self.graph[node_a][node_b] = edge_properties
+        self.graph[node_b][node_a] = edge_properties
+
     def __repr__(self):
-        output = "Graph: \n"
-        for node in self.vertices:
-            output += f"{node.value} -> "
-            output += f"{str([i[0] for i in node.edges])[1:-1]}\n"
+        output = ""
+        for key in self.graph.keys():
+            output += f"{key} : {self.graph[key]}\n"
         return output
-            
-    def _clean(self):
-        for node in self.vertices:
-            # make sure that if one node has a path to another, 
-            # the corresponding node also has that path
-            if not self.is_directed: # if it not a directed graph
-                for v in node.edges:
-                    v.add_neighbor(node, node.edges[v])
-            
-            # if a graph is not enabled to have loops it must not
-            # have an edge to itself
-            if not self.has_loops and node in node.edges:
-                node.edges.pop(node)
     
-    def add_vertex(self, value, neighbors={}):
-        node = Node(value)
-        for n, w in neighbors.items():
-            node.add_neighbor(n, w)
-        self.vertices[node] = 0 # zerod dictionary
+    def has_edge(self, node_a, node_b):
+        if self.has_node(node_a) and self.has_node(node_b):
+            return node_b in self.graph[node_a]
+        return False
 
-        
-    def add_edge(self, start, end, weight=1):
-        if start in self.vertices and end in self.vertices:
-            start.add_neighbor(end, weight)
-            self._clean()
-        elif start in {v.value for v in self.vertices} and end in {v.value for v in self.vertices}:
-            
+    def has_node(self, node):
+        return node in self.graph
 
-
-
-    # def add_vertex(self, vertex, ls=set()):
-    #     if vertex not in self.graph:
-    #         self.graph[vertex] = ls
-    #     self._clean()
-
-    # # incase a vertex is given just call the neighbors function
-    # def vertices(self, vertex=None):
-    #     if not vertex:
-    #         return [node for node in self.graph]
-    #     return self.neighbors(vertex)
-    
-    # #TODO: Implement
-    # def add_edge(self, vertex1, vertex2):
-    #     pass
-
-    # def all_edges(self):
-    #     edges = []
-    #     for node in self.graph:
-    #         for neighbor in self.graph[node]:
-    #             # for directed graph, order is significant
-    #             edges.append((node, neighbor))
-    #     return edges
- 
-    # def edges(self, vertex=None):
-    #     if not vertex:
-    #         return self.all_edges()
-    #         # use tuple instead of set in case of directed graph
-    #     return [(vertex, neighbor) for neighbor in self.graph[vertex]]
-
-
-    # def get_isolated(self):
-    #     isolated = set()
-    #     for node in self.graph:
-    #         if not self.graph[node]:
-    #             isolated.add(node)
-    #     return isolated
-    
-    # #TODO: Implement
-    # def set_directed(self):
-    #     pass
-
-
-    # #TODO: if no vertex is passed, generate the degrees for all nodes
-    # def degree(self, vertex):
-    #     return len(self.graph[vertex])
-        
-    # def neighbors(self, vertex):
-    #     return self.graph[vertex]
-
-
-
-class Node:
-    def __init__(self, value):
-        self.value = value
-        self.edges = {}
-
-    def add_neighbor(self, neighbor, weight=1):
-        if neighbor not in self.edges:
-            self.edges[neighbor] = weight
-    
-    def __eq__(self, other):
+class BST:
+    def __init__(self, root=None):
+        if root is not None:
+            try:
+                assert type(root) == type(BST_node())
+            except AssertionError:
+                print("root must be a BST node")
+        pass
+    def add_node(self, new_node):
         pass
 
 
+def add_edge(graph, start, end, **kwargs):
+    graph[start][end] = kwargs
+    graph[end][start] = kwargs
 
-if __name__ == "__main__":
-    g = Graph()
-    g.add_vertex(12)
-    g.add_vertex(3)
-    print(g)
-    g.add_edge(12, 3)
-    print(g)
-    pass
+def add_node(graph, new_node, edges=dict(), **kwargs):
+    try:
+        assert type(edges) == type(dict())
+    except AssertionError:
+        print("edges must be a dictionary")
+    
+    for node in edges.keys():
+        pass
+        # add_edge(graph, new_node, node, **{edges[node][key]: edges[node][val] for key, val in edges[node].items()})
+
+g = Graph()
+g.add_node("a", {"b":{"weight":1, "color": "blue"}, "c":{"weight":2}})
+print(g)
+g.add_edge("b", "d", weight=1)
+print(g)
+print(g.has_edge("a", "d"))

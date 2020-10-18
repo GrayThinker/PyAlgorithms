@@ -3,18 +3,51 @@ TODO: Radix sort, gravity sort, sedge sort,
 double selection sort, shell sort, comb sort, bitonic, heap,
 odd even sort, smooth sort, gnome sort, weak-heap sort, bucket,
 funnel sort, cube sort, cache-oblivious distribution sort, 
-multi-key quick sort, tournament sort, splay sort.
+multi-key quick sort, tournament sort, splay sort, tree sort.
 
 TODO: Memory profiler
 """
 import random
+import copy
+import math
 
-def bogo_sort(l_arr, optimize=True):
+def bitonic_sort(l_arr):
+    #assert is_power_of_2(len(l_arr))
+    arr = l_arr[:]    
+    n = 0
+    while 2**n < len(arr):
+        temp_limit = n
+        while(temp_limit >= 0):
+            i = 0
+            switch_compare = True
+            switch_tracker = 0
+            jump_tracker = 0
+            gap = 2 ** temp_limit
+            while i < len(arr) - gap:
+                if (switch_compare):
+                    arr[i], arr[i+gap] = min(arr[i], arr[i+gap]), max(arr[i], arr[i+gap])
+                else:
+                    arr[i+gap], arr[i] = min(arr[i], arr[i+gap]), max(arr[i], arr[i+gap])
+                jump_tracker += 1
+                switch_tracker += 1
+                if(jump_tracker == gap):
+                    jump_tracker = 0
+                    i += gap
+                    if (switch_tracker == 2**n):
+                        switch_compare = not switch_compare
+                i += 1
+            temp_limit -= 1
+        n += 1
+
+    return arr
+
+
+def bogo_sort(itr, optimize=True):
     """
     optimize: bool whether or not to optimize
     O(n!)
     """
-    arr = l_arr[:]
+    arr = itr[:]
     if optimize:
         n = 0
         s_arr = sorted(arr)
@@ -26,19 +59,19 @@ def bogo_sort(l_arr, optimize=True):
                 n += 1
         return arr
 
-    while(arr != sorted(l_arr)):
+    while(arr != sorted(itr)):
         random.shuffle(arr)
 
     return arr
 
 
-def bubble_sort(l_arr):
+def bubble_sort(itr):
     """
     Worst-case: O(n^2) comparisons, O(n^2) swaps
     Best-case: O(n) comparisons, O(1) swaps
     Worst-case space: O(n) total, O(1) auxiliary
     """
-    arr = l_arr[:]
+    arr = list(copy.copy(itr))
     is_sorted = True
     n = len(arr)
     while n > 1:
@@ -52,8 +85,8 @@ def bubble_sort(l_arr):
     return arr
 
 
-def cocktail_sort(l_arr):
-    arr = l_arr[:]
+def cocktail_sort(itr):
+    arr = itr[:]
     n = 0
     m = len(arr) - 1
 
@@ -75,8 +108,8 @@ def cocktail_sort(l_arr):
     return arr
 
 
-def insertion_sort(l_arr):
-    arr = l_arr[:]
+def insertion_sort(itr):
+    arr = itr[:]
     if len(arr) <= 1: return arr
 
     for i in range(1, len(arr)):
@@ -106,8 +139,8 @@ def merge(list_a, list_b):
     return new_list
 
 
-def rec_merge_sort(l_arr):
-    arr = l_arr[:]
+def rec_merge_sort(itr):
+    arr = itr[:]
     if len(arr) <=1: 
         return arr
     
@@ -115,10 +148,10 @@ def rec_merge_sort(l_arr):
     return merge(merge_sort(arr[:half]), merge_sort(arr[half:]))
 
 
-def merge_sort(l_arr, rec=False):
+def merge_sort(itr, rec=False):
     if rec:
-        return rec_merge_sort(l_arr)
-    arr = l_arr[:]
+        return rec_merge_sort(itr)
+    arr = itr[:]
 
     if len(arr) <= 1: return arr  # empty/single value list
 
@@ -143,14 +176,14 @@ def merge_sort(l_arr, rec=False):
     return broken_list[0]
 
 
-def pigeon_hole_sort(l_arr):
+def pigeon_hole_sort(itr):
     """
-    Worst-case: O(N+n) where N = max(l_arr)-min(l_arr) and n  = len(l_arr)
+    Worst-case: O(N+n) where N = max(itr)-min(itr) and n  = len(itr)
     Best case: Number of key values = number of elements.
     Memory intensive.
     """
 
-    arr = l_arr[:]
+    arr = itr[:]
     if len(arr) <= 1: return arr
     s_arr = []
 
@@ -193,8 +226,8 @@ def selection_sort(ls):
     return nums
 
 
-def quick_sort(l_arr):
-    arr = l_arr[:]
+def quick_sort(itr):
+    arr = itr[:]
     if len(arr) <= 1: return arr
     less_ls, equal_ls, greater_ls = [], [], []
     pivot = arr[-1]
@@ -205,8 +238,8 @@ def quick_sort(l_arr):
     return quick_sort(less_ls) + equal_ls + quick_sort(greater_ls)
 
 
-def cycle_sort(l_arr):
-    arr = l_arr[:]
+def cycle_sort(itr):
+    arr = itr[:]
     pos = 0
     i = arr[pos]
     while pos < len(arr) - 1:
@@ -229,8 +262,8 @@ def cycle_sort(l_arr):
     return arr
 
 
-def pancake_sort(l_arr):
-    arr = l_arr.copy()
+def pancake_sort(itr):
+    arr = itr.copy()
     cur = 0
     length = len(arr)
     while cur < length:
@@ -243,3 +276,7 @@ def pancake_sort(l_arr):
     
     return arr
 
+
+l = [2, 4, 3, 1, 6, 2, 9]
+print(insertion_sort(l))
+print(l)

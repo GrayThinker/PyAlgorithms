@@ -1,7 +1,8 @@
-from src.sort import *
-from src.graph import Graph
+from sort import *
+# from graph import Graph
 from timeit import timeit
-
+import random
+import math
 alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l"]
 
 def time_sort(sort, numbers, reps=10):
@@ -42,3 +43,10 @@ def random_graph(alphabet=alphabet, min_degree=0, max_degree=round(len(alphabet)
         d.update({i : [random.choice(exclude(alphabet, i)) for _ in range(random.randint(min_degree, max_degree))]})
     g = Graph(d)
     return g
+
+def is_power_of_2(num):
+    if num == 0:
+        return False
+    if math.ceil(math.log2(num)) == math.floor(math.log2(num)):
+        return True
+    return False

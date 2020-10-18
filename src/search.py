@@ -12,11 +12,36 @@ def sublist_search(val, ls):
     #TODO: Implement
     pass
 
-
-def fib_search(val, ls):
+def ternary_search(val, ls):
     #TODO: Implement
     pass
 
+def dichotomous_search(val, ls):
+    #TODO: Implement
+    pass
+
+def fib_search(val, ls):
+    """divide and conquer approach
+    time complexity: log(n)
+    """
+    fib_seq = [_ for _ in fib_lt(len(ls))]
+    a = ls[0]
+    b = ls[-1]
+    # c = a + fib_seq[]
+
+def fib(n):
+    if n == 0:
+        return 0
+    if n == 1:
+        return 1
+    return fib(n-2) + fib(n-1)
+    
+def fib_lt(n):
+    i = 0
+    j = 1
+    while(i < n):
+        yield i
+        i, j = j, i + j
 
 def unbound_binary_search(val, ls):
     #TODO: Implement
@@ -49,8 +74,6 @@ def binary_search(val, ls):
         else:
             ls = ls[:half]
     return -1
-
-print(binary_search(1, [1, 3, 4, 8, 9]))
 
 def jump_search(val, ls):
     """
