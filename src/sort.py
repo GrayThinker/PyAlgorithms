@@ -556,3 +556,28 @@ def pancake_sort(itr):
         cur += 1
     
     return arr
+
+def counting_sort(l_arr):
+    l_arr = l_arr[:]
+    count_ls = []
+    for i in l_arr:
+        position_found = False
+        for index in range(len(count_ls)):
+            if i == count_ls[index][0]:
+                count_ls[index][1] += 1
+                position_found = True
+                break
+            if i < count_ls[index][0]:
+                count_ls.insert(index, [i, 1])
+                position_found = True
+                break
+        if position_found == False:
+            count_ls.append([i, 1])
+
+    return_ls = []
+    for pair_index in range(len(count_ls)):
+        while count_ls[pair_index][1] > 0:
+            return_ls.append(count_ls[pair_index][0])
+            count_ls[pair_index][1] -= 1
+    
+    return return_ls
