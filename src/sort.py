@@ -1,6 +1,6 @@
 """
 TODO: Radix sort, gravity sort, sedge sort,
-double selection sort, shell sort, comb sort, bitonic, heap,
+double selection sort, shell sort, comb sort, heap,
 odd even sort, smooth sort, gnome sort, weak-heap sort, bucket,
 funnel sort, cube sort, cache-oblivious distribution sort, 
 multi-key quick sort, tournament sort, splay sort, tree sort.
@@ -12,6 +12,31 @@ import copy
 import math
 
 def bitonic_sort(l_arr):
+    """
+    
+    Type
+    ----
+
+    Time complexity
+    ---------------
+        Worst:
+        Best:
+        Average:
+
+    Space complexity
+    ----------------
+
+    Parameters
+    ----------
+        arr:
+
+    Application
+    -----------
+
+    References
+    ----------
+    
+    """
     #assert is_power_of_2(len(l_arr))
     arr = l_arr[:]    
     n = 0
@@ -44,8 +69,30 @@ def bitonic_sort(l_arr):
 
 def bogo_sort(itr, optimize=True):
     """
-    optimize: bool whether or not to optimize
-    O(n!)
+    
+    Type
+    ----
+
+    Time complexity
+    ---------------
+        Worst: O(n!)
+        Best:
+        Average:
+
+    Space complexity
+    ----------------
+
+
+    Parameters
+    ----------
+        arr:
+
+    Application
+    -----------
+
+    References
+    ----------
+    
     """
     arr = itr[:]
     if optimize:
@@ -67,9 +114,29 @@ def bogo_sort(itr, optimize=True):
 
 def bubble_sort(itr):
     """
-    Worst-case: O(n^2) comparisons, O(n^2) swaps
-    Best-case: O(n) comparisons, O(1) swaps
-    Worst-case space: O(n) total, O(1) auxiliary
+    
+    Type
+    ----
+
+    Time complexity
+    ---------------
+        Worst:
+        Best:
+        Average:
+
+    Space complexity
+    ----------------
+
+    Parameters
+    ----------
+        arr:
+
+    Application
+    -----------
+
+    References
+    ----------
+    
     """
     arr = list(copy.copy(itr))
     is_sorted = True
@@ -86,6 +153,31 @@ def bubble_sort(itr):
 
 
 def cocktail_sort(itr):
+    """
+    
+    Type
+    ----
+
+    Time complexity
+    ---------------
+        Worst:
+        Best:
+        Average:
+
+    Space complexity
+    ----------------
+
+    Parameters
+    ----------
+        arr:
+
+    Application
+    -----------
+
+    References
+    ----------
+    
+    """    
     arr = itr[:]
     n = 0
     m = len(arr) - 1
@@ -109,6 +201,31 @@ def cocktail_sort(itr):
 
 
 def insertion_sort(itr):
+    """
+    
+    Type
+    ----
+
+    Time complexity
+    ---------------
+        Worst:
+        Best:
+        Average:
+
+    Space complexity
+    ----------------
+
+    Parameters
+    ----------
+        arr:
+
+    Application
+    -----------
+
+    References
+    ----------
+    
+    """    
     arr = itr[:]
     if len(arr) <= 1: return arr
 
@@ -140,6 +257,31 @@ def merge(list_a, list_b):
 
 
 def rec_merge_sort(itr):
+    """
+    
+    Type
+    ----
+
+    Time complexity
+    ---------------
+        Worst:
+        Best:
+        Average:
+
+    Space complexity
+    ----------------
+
+    Parameters
+    ----------
+        arr:
+
+    Application
+    -----------
+
+    References
+    ----------
+    
+    """    
     arr = itr[:]
     if len(arr) <=1: 
         return arr
@@ -149,6 +291,31 @@ def rec_merge_sort(itr):
 
 
 def merge_sort(itr, rec=False):
+    """
+    
+    Type
+    ----
+
+    Time complexity
+    ---------------
+        Worst:
+        Best:
+        Average:
+
+    Space complexity
+    ----------------
+
+    Parameters
+    ----------
+        arr:
+
+    Application
+    -----------
+
+    References
+    ----------
+    
+    """    
     if rec:
         return rec_merge_sort(itr)
     arr = itr[:]
@@ -178,9 +345,29 @@ def merge_sort(itr, rec=False):
 
 def pigeon_hole_sort(itr):
     """
-    Worst-case: O(N+n) where N = max(itr)-min(itr) and n  = len(itr)
-    Best case: Number of key values = number of elements.
-    Memory intensive.
+    
+    Type
+    ----
+
+    Time complexity
+    ---------------
+        Worst:
+        Best:
+        Average:
+
+    Space complexity
+    ----------------
+
+    Parameters
+    ----------
+        arr:
+
+    Application
+    -----------
+
+    References
+    ----------
+    
     """
 
     arr = itr[:]
@@ -209,10 +396,29 @@ def pigeon_hole_sort(itr):
 
 def selection_sort(ls):
     """
-    worst case: O(n^2) comparisons, O(n) swaps
-    best case: O(n) comparisons, O(1) swaps
-    Average: O(n^2) comparisons, O(n) swaps
-    Worst space: O(1) auxiliary
+    
+    Type
+    ----
+
+    Time complexity
+    ---------------
+        Worst:
+        Best:
+        Average:
+
+    Space complexity
+    ----------------
+
+    Parameters
+    ----------
+        arr:
+
+    Application
+    -----------
+
+    References
+    ----------
+    
     """
     nums = ls[:]
     n = 0
@@ -227,6 +433,31 @@ def selection_sort(ls):
 
 
 def quick_sort(itr):
+    """
+    
+    Type
+    ----
+
+    Time complexity
+    ---------------
+        Worst:
+        Best:
+        Average:
+
+    Space complexity
+    ----------------
+
+    Parameters
+    ----------
+        arr:
+
+    Application
+    -----------
+
+    References
+    ----------
+    
+    """    
     arr = itr[:]
     if len(arr) <= 1: return arr
     less_ls, equal_ls, greater_ls = [], [], []
@@ -239,6 +470,31 @@ def quick_sort(itr):
 
 
 def cycle_sort(itr):
+    """
+    
+    Type
+    ----
+
+    Time complexity
+    ---------------
+        Worst:
+        Best:
+        Average:
+
+    Space complexity
+    ----------------
+
+    Parameters
+    ----------
+        arr:
+
+    Application
+    -----------
+
+    References
+    ----------
+    
+    """    
     arr = itr[:]
     pos = 0
     i = arr[pos]
@@ -263,6 +519,31 @@ def cycle_sort(itr):
 
 
 def pancake_sort(itr):
+    """
+    
+    Type
+    ----
+
+    Time complexity
+    ---------------
+        Worst:
+        Best:
+        Average:
+
+    Space complexity
+    ----------------
+
+    Parameters
+    ----------
+        arr:
+
+    Application
+    -----------
+
+    References
+    ----------
+    
+    """    
     arr = itr.copy()
     cur = 0
     length = len(arr)
@@ -275,8 +556,3 @@ def pancake_sort(itr):
         cur += 1
     
     return arr
-
-
-l = [2, 4, 3, 1, 6, 2, 9]
-print(insertion_sort(l))
-print(l)

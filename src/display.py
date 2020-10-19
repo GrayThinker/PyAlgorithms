@@ -13,7 +13,7 @@ class display:
 
     def __init__(self, width=600, height=600, number_of_elements=100, repeats=True):
         if (number_of_elements > width):
-            raise ValueError("Wisplay width must be larger than number of elements")
+            raise ValueError("Display width must be larger than number of elements")
         self.width = width
         self.height = height
         self.number_of_elements = number_of_elements

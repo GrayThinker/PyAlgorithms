@@ -1,5 +1,5 @@
-from sort import *
-from utils import *
+from src.sort import *
+from src.utils import *
 import random
 from matplotlib import pyplot as plt
 
