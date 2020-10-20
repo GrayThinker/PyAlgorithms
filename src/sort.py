@@ -581,3 +581,17 @@ def counting_sort(l_arr):
             count_ls[pair_index][1] -= 1
     
     return return_ls
+
+def odd_even_sort(l_arr):
+    arr = l_arr[:]
+    sorted = False
+    while(not sorted):
+        sorted = True
+        for i, j in zip(range(0, len(arr)-1, 2), range(1, len(arr)-1, 2)):
+            if arr[i] > arr[i+1]:
+                arr[i], arr[i+1] = arr[i+1], arr[i]
+                sorted = False
+            if arr[j] > arr[j+1]:
+                arr[j], arr[j+1] = arr[j+1], arr[j]
+                sorted = False
+    return arr
