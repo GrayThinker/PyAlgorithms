@@ -1,7 +1,7 @@
 """
 TODO: Radix sort, gravity sort, sedge sort,
 double selection sort, shell sort, comb sort, heap,
-odd even sort, smooth sort, gnome sort, weak-heap sort, bucket,
+smooth sort, gnome sort, weak-heap sort, bucket,
 funnel sort, cube sort, cache-oblivious distribution sort, 
 multi-key quick sort, tournament sort, splay sort, tree sort.
 
