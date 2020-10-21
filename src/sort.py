@@ -10,6 +10,7 @@ TODO: Memory profiler
 import random
 import copy
 import math
+from src.graph import BST_node
 
 def bitonic_sort(l_arr):
     """
@@ -595,3 +596,13 @@ def odd_even_sort(l_arr):
                 arr[j], arr[j+1] = arr[j+1], arr[j]
                 sorted = False
     return arr
+
+def heap_sort(l_arr):
+    l_arr = l_arr[:]
+    if len(l_arr) < 1:
+        return l_arr
+    
+    root = BST_node(l_arr[0])
+    for val in l_arr[1:]:
+        root.add_node(BST_node(val))
+    return root.read()

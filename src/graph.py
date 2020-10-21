@@ -1,10 +1,10 @@
 import random
 
 class node:
-    def __init__(self, value, **attr):
+    def __init__(self, value): # **attr
         self.value = value
-        for key, val in attr.items():
-            self.key = val
+        # for key, val in attr.items():
+        #     self.key = val
     
     def __lt__(self, other):
         return self.value < other.value
@@ -42,13 +42,39 @@ class graph_node(node):
 class BST_node(node):
     def __init__(self, value, left=None, right=None):
         try:
-            assert left < value and value < right
+            if left is not None and right is not None:
+                assert left < value and value < right
         except AssertionError:
             print("left node must be less than current node which must be lest the right node")
 
-        super().__init__(value, left=left, right=right)
+        super().__init__(value)
+        self.left=left
+        self.right=right
+        self.count=1
 
+    def add_node(self, new_node):
+        if new_node < self:
+            if (self.left is not None):
+                self.left.add_node(new_node)
+            else:
+                self.left = new_node
+        elif new_node > self:
+            if (self.right is not None):
+                self.right.add_node(new_node)
+            else:
+                self.right = new_node
+        else:
+            self.count += 1
 
+    def read(self):
+        arr = []
+        if self.left is not None:
+            arr += self.left.read()
+        arr += [self.value for i in range(self.count)]
+        if self.right is not None:
+            arr += (self.right.read())
+        return arr
+            
 class Graph:
     def __init__(self):
         self.graph = dict()
@@ -117,9 +143,13 @@ class BST:
                 assert type(root) == type(BST_node())
             except AssertionError:
                 print("root must be a BST node")
-        pass
-    def add_node(self, new_node):
-        pass
+        self.root = root
+
+    # def add_node(self, new_node):
+    #     if new_node < self.root:
+    #         self.root.left = new_node
+    #     elif new_node > self.root:
+    #         self.root.right = new_node
 
 
 if __name__ == '__main__':

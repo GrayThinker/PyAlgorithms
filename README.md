@@ -12,4 +12,6 @@ A python implementation of several common and uncommon algorithms
 * Merge sort
 * Cycle sort
 * Pancake sort
-
+* Counting sort
+* Heap sort
+* Odd-Even sort
