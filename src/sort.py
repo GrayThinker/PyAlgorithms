@@ -14,25 +14,26 @@ from src.graph import BST_node
 
 def bitonic_sort(l_arr):
     """
-    
+    Sort an array using a bitonic sequence
+
     Type
     ----
+        Parallel
 
     Time complexity
     ---------------
-        Worst:
-        Best:
-        Average:
+        Worst: O(log^2(n)) parallel time
+        Best: O(log^2(n)) parallel time
+        Average: O(log^2(n)) parallel time
 
     Space complexity
     ----------------
+        O(n*log^2(n)) non-parallel time
 
     Parameters
     ----------
-        arr:
-
-    Application
-    -----------
+        l_arr: array to be sorted
+            note: len(l_arr) must be a power of 2
 
     References
     ----------
@@ -70,26 +71,26 @@ def bitonic_sort(l_arr):
 
 def bogo_sort(itr, optimize=True):
     """
-    
+    Sort an array by randomly shuffling it
+
     Type
     ----
 
     Time complexity
     ---------------
-        Worst: O(n!)
-        Best:
-        Average:
+        Worst: O((n+1)!)
+        Best: O(n)
+        Average: O((n+1)!)
 
     Space complexity
     ----------------
-
+        O(1)
 
     Parameters
     ----------
-        arr:
-
-    Application
-    -----------
+        itr: [list] array to be sorted
+        optimize: [bool] shuffle and check one element at a time
+            instad of the entire array
 
     References
     ----------
@@ -118,6 +119,7 @@ def bubble_sort(itr):
     
     Type
     ----
+        Comparison
 
     Time complexity
     ---------------

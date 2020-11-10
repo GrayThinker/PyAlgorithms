@@ -1,10 +1,8 @@
 import random
 
 class node:
-    def __init__(self, value): # **attr
+    def __init__(self, value):
         self.value = value
-        # for key, val in attr.items():
-        #     self.key = val
     
     def __lt__(self, other):
         return self.value < other.value
@@ -26,6 +24,7 @@ class node:
 
     def __hash__(self):
         return hash(self.value)
+    
     
 class graph_node(node):
     def __init__(self, value, edges=dict()):
